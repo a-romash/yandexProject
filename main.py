@@ -1,4 +1,5 @@
 import pygame
+import spriteAnimation
 
 SIZE = WIDTH, HEIGHT = 1280, 720
 FPS = 30
