@@ -3,9 +3,6 @@ import sys
 
 from pygame.locals import *
 
-SIZE = WIDTH, HEIGHT = 1280, 720
-FPS = 30
-
 
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
@@ -14,8 +11,10 @@ def draw_text(text, font, color, surface, x, y):
     surface.blit(textobj, textrect)
 
 
-def start_menu():
+def start_menu(screen):
     click = False
+    font = pygame.font.SysFont(None, 30)
+    main_clock = pygame.time.Clock()
 
     while True:
 
@@ -24,20 +23,20 @@ def start_menu():
 
         mx, my = pygame.mouse.get_pos()
 
-        button_1 = pygame.Rect(500, 330, 300, 50)
-        button_2 = pygame.Rect(500, 480, 300, 50)
+        button_1 = pygame.Rect(100, 480, 270, 50)
+        button_2 = pygame.Rect(100, 580, 270, 50)
 
         if button_1.collidepoint((mx, my)):
             if click:
-                game()
+                game(screen)
         if button_2.collidepoint((mx, my)):
             if click:
-                rules()
+                rules(screen)
         pygame.draw.rect(screen, (255, 0, 0), button_1)
         pygame.draw.rect(screen, (255, 0, 0), button_2)
 
-        draw_text('ИГРАТЬ', font, (255, 255, 255), screen, 600, 350)
-        draw_text('ПРАВИЛА', font, (255, 255, 255), screen, 600, 500)
+        draw_text('ИГРАТЬ', font, (255, 255, 255), screen, 160, 500)
+        draw_text('ПРАВИЛА', font, (255, 255, 255), screen, 160, 600)
 
         click = False
         for event in pygame.event.get():
@@ -53,11 +52,13 @@ def start_menu():
                     click = True
 
         pygame.display.update()
-        mainClock.tick(60)
+        main_clock.tick(60)
 
 
-def game():
+def game(screen):
+    main_clock = pygame.time.Clock()
     running = True
+
     while running:
         screen.fill((0, 0, 0))
 
@@ -70,11 +71,13 @@ def game():
                     running = False
 
         pygame.display.update()
-        mainClock.tick(60)
+        main_clock.tick(60)
 
 
-def rules():
+def rules(screen):
+    main_clock = pygame.time.Clock()
     running = True
+
     while running:
         screen.fill((0, 0, 0))
 
@@ -87,30 +90,4 @@ def rules():
                     running = False
 
         pygame.display.update()
-        mainClock.tick(60)
-
-
-if __name__ == "__main__":
-
-    mainClock = pygame.time.Clock()
-    pygame.init()
-
-    screen = pygame.display.set_mode(SIZE)
-    font = pygame.font.SysFont(None, 30)
-
-    clock = pygame.time.Clock()
-
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-        start_menu()
-
-        screen.fill((0, 0, 0))
-        clock.tick(FPS)
-        pygame.display.flip()
-    pygame.quit()
-
-click = False
+        main_clock.tick(60)
