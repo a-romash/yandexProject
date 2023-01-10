@@ -5,10 +5,10 @@ from pygame.locals import *
 
 
 def draw_text(text, font, color, surface, x, y):
-    textobj = font.render(text, 1, color)
-    textrect = textobj.get_rect()
-    textrect.topleft = (x, y)
-    surface.blit(textobj, textrect)
+    text_obj = font.render(text, 1, color)
+    text_rect = text_obj.get_rect()
+    text_rect.topleft = (x, y)
+    surface.blit(text_obj, text_rect)
 
 
 def start_menu(screen):
@@ -17,23 +17,22 @@ def start_menu(screen):
     main_clock = pygame.time.Clock()
 
     while True:
-
         screen.fill((0, 0, 0))
         draw_text('START MENU', font, (0, 0, 0), screen, 250, 40)
 
         mx, my = pygame.mouse.get_pos()
 
-        button_1 = pygame.Rect(100, 480, 270, 50)
-        button_2 = pygame.Rect(100, 580, 270, 50)
+        btn_start = pygame.Rect(100, 480, 270, 50)
+        btn_rules = pygame.Rect(100, 580, 270, 50)
 
-        if button_1.collidepoint((mx, my)):
+        if btn_start.collidepoint((mx, my)):
             if click:
                 game(screen)
-        if button_2.collidepoint((mx, my)):
+        if btn_rules.collidepoint((mx, my)):
             if click:
                 rules(screen)
-        pygame.draw.rect(screen, (255, 0, 0), button_1)
-        pygame.draw.rect(screen, (255, 0, 0), button_2)
+        pygame.draw.rect(screen, (255, 0, 0), btn_start)
+        pygame.draw.rect(screen, (255, 0, 0), btn_rules)
 
         draw_text('ИГРАТЬ', font, (255, 255, 255), screen, 160, 500)
         draw_text('ПРАВИЛА', font, (255, 255, 255), screen, 160, 600)
