@@ -11,17 +11,44 @@ def load_image(name):
     return image
 
 
+def change_number(all_sprites):
+    with open('window.txt', encoding='utf8') as w:
+        window = int(w.read().strip()) + 1
+
+    with open('window.txt', mode='wt') as w:
+        w.write(f'{window % 2}')
+
+    with open('window.txt', encoding='utf8') as w:
+        if '0' in w.read():
+            b = 0
+        else:
+            b = 1
+        all_sprites.update(b)
+
+
 class Menu_img(pygame.sprite.Sprite):
     sprite = pygame.sprite.Sprite()
-    sprite.img_menu = load_image("assets/background/background_1.jpg")
-    image = pygame.transform.scale(sprite.img_menu, (1280, 720))
+    sprite.img_menu1 = load_image("assets/background/background_1.jpg")
+    image1 = pygame.transform.scale(sprite.img_menu1, (1280, 720))
+
+    sprite.img_menu2 = load_image("assets/background/background_2.jpg")
+    image2 = pygame.transform.scale(sprite.img_menu2, (1280, 720))
 
     def __init__(self, group):
         super().__init__(group)
-        self.image = Menu_img.image
+        self.image = Menu_img.image1
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = 0
+        self.buttons_color = 0
+
+    def update(self, b):
+        if b == 1:
+            self.image = self.image2
+            self.buttons_color = 1
+        else:
+            self.image = self.image1
+            self.buttons_color = 0
 
 
 def draw_text(text, fon, color, surface, x, y, size):
@@ -39,37 +66,61 @@ def start_menu(screen):
     main_clock = pygame.time.Clock()
 
     all_sprites = pygame.sprite.Group()
-    Menu_img(all_sprites)
+    menu = Menu_img(all_sprites)
+
+    with open('window.txt', encoding='utf8') as w:
+        b = None
+        if '0' in w.read():
+            b = 0
+        else:
+            b = 1
+        all_sprites.update(b)
 
     while True:
+
         screen.fill((0, 0, 0))
         all_sprites.draw(screen)
 
         rect_text = pygame.Rect(380, 160, 490, 80)
-        pygame.draw.rect(screen, (147, 112, 250), rect_text)
-        draw_text('START MENU', 'arrial', (245, 245, 245), screen, 400, 170, 100)
+
         mx, my = pygame.mouse.get_pos()
 
         btn_start = pygame.Rect(100, 380, 270, 50)
         btn_rules = pygame.Rect(100, 480, 270, 50)
         btn_credits = pygame.Rect(100, 580, 270, 50)
 
+        if menu.buttons_color == 0:
+            pygame.draw.rect(screen, (147, 112, 250), rect_text)
+
+            pygame.draw.rect(screen, (147, 112, 250), btn_start)
+            pygame.draw.rect(screen, (147, 112, 250), btn_rules)
+            pygame.draw.rect(screen, (147, 112, 250), btn_credits)
+
+        else:
+            pygame.draw.rect(screen, (102,205,170), rect_text)
+
+            pygame.draw.rect(screen, (102,205,170), btn_start)
+            pygame.draw.rect(screen, (102,205,170), btn_rules)
+            pygame.draw.rect(screen, (102,205,170), btn_credits)
+
+        draw_text('START MENU', 'arrial', (245, 245, 245), screen, 400, 170, 100)
+
+        draw_text('ИГРАТЬ', 'arrial', (245, 245, 245), screen, 190, 397, 30)
+        draw_text('ПРАВИЛА', 'arrial', (245, 245, 245), screen, 180, 497, 30)
+        draw_text('CREDITS', 'arrial', (245, 245, 245), screen, 180, 597, 30)
+
         if btn_start.collidepoint((mx, my)):
             if click:
                 game(screen)
+                change_number(all_sprites)
         if btn_rules.collidepoint((mx, my)):
             if click:
                 rules(screen)
+                change_number(all_sprites)
         if btn_credits.collidepoint((mx, my)):
             if click:
                 credits(screen)
-        pygame.draw.rect(screen, (147, 112, 250), btn_start)
-        pygame.draw.rect(screen, (147, 112, 250), btn_rules)
-        pygame.draw.rect(screen, (147, 112, 250), btn_credits)
-
-        draw_text('ИГРАТЬ', 'arrial', (255, 255, 255), screen, 190, 397, 30)
-        draw_text('ПРАВИЛА', 'arrial', (255, 255, 255), screen, 180, 497, 30)
-        draw_text('CREDITS', 'arrial', (255, 255, 255), screen, 180, 597, 30)
+                change_number(all_sprites)
 
         click = False
         for event in pygame.event.get():

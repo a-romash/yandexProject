@@ -9,7 +9,6 @@ FPS = 30
 # 1 - уже сама игра
 UI_CONDITION = 0
 
-
 if __name__ == "__main__":
     pygame.init()
 
@@ -23,6 +22,12 @@ if __name__ == "__main__":
                 running = False
 
         if UI_CONDITION == 0:
+            with open('window.txt', encoding='utf8') as w:
+                window = int(w.read().strip()) + 1
+
+            with open('window.txt', mode='wt') as w:
+                w.write(f'{window % 2}')
+
             start_menu(screen)
 
         screen.fill((0, 0, 0))
