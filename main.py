@@ -3,12 +3,11 @@ import pygame
 from spriteAnimation import *
 
 from startMenu import start_menu
+from constants import *
 
-SIZE = WIDTH, HEIGHT = 1280, 720
-FPS = 5
 # 0 - Начальное меню
 # 1 - уже сама игра
-UI_CONDITION = 0
+UI_CONDITION = 1
 
 
 def load_image(name, color_key=None):
@@ -42,6 +41,10 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+        if UI_CONDITION == 0:
+            start_menu(screen)
+
         screen.fill(pygame.Color("white"))
         all_sprites.draw(screen)
         all_sprites.update()
