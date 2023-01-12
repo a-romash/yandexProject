@@ -1,7 +1,27 @@
 import pygame
 import sys
+import os
 
 from pygame.locals import *
+
+
+def load_image(name):
+    fullname = os.path.join(name)
+    image = pygame.image.load(fullname)
+    return image
+
+
+class Menu_img(pygame.sprite.Sprite):
+    sprite = pygame.sprite.Sprite()
+    sprite.img_menu = load_image("assets/background/background_1.jpg")
+    image = pygame.transform.scale(sprite.img_menu, (1280, 720))
+
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = Menu_img.image
+        self.rect = self.image.get_rect()
+        self.rect.x = 0
+        self.rect.y = 0
 
 
 def draw_text(text, fon, color, surface, x, y, size):
@@ -12,15 +32,22 @@ def draw_text(text, fon, color, surface, x, y, size):
     textrect.topleft = (x, y)
     surface.blit(textobj, textrect)
 
+
 def start_menu(screen):
     click = False
     font = pygame.font.SysFont(None, 30)
     main_clock = pygame.time.Clock()
 
+    all_sprites = pygame.sprite.Group()
+    Menu_img(all_sprites)
+
     while True:
         screen.fill((0, 0, 0))
-        draw_text('START MENU', 'arrial', (100, 22, 0), screen, 430, 250, 100)
+        all_sprites.draw(screen)
 
+        rect_text = pygame.Rect(380, 160, 490, 80)
+        pygame.draw.rect(screen, (147, 112, 250), rect_text)
+        draw_text('START MENU', 'arrial', (245, 245, 245), screen, 400, 170, 100)
         mx, my = pygame.mouse.get_pos()
 
         btn_start = pygame.Rect(100, 380, 270, 50)
@@ -36,9 +63,9 @@ def start_menu(screen):
         if btn_credits.collidepoint((mx, my)):
             if click:
                 credits(screen)
-        pygame.draw.rect(screen, (255, 0, 0), btn_start)
-        pygame.draw.rect(screen, (255, 0, 0), btn_rules)
-        pygame.draw.rect(screen, (255, 0, 0), btn_credits)
+        pygame.draw.rect(screen, (147, 112, 250), btn_start)
+        pygame.draw.rect(screen, (147, 112, 250), btn_rules)
+        pygame.draw.rect(screen, (147, 112, 250), btn_credits)
 
         draw_text('ИГРАТЬ', 'arrial', (255, 255, 255), screen, 190, 397, 30)
         draw_text('ПРАВИЛА', 'arrial', (255, 255, 255), screen, 180, 497, 30)
@@ -110,6 +137,7 @@ def rules(screen):
         pygame.display.update()
         main_clock.tick(60)
 
+
 def credits(screen):
     main_clock = pygame.time.Clock()
     running = True
@@ -139,6 +167,7 @@ def credits(screen):
 
         pygame.display.update()
         main_clock.tick(60)
+
 
 def choise(screen, mainClock):
     running = True
