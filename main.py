@@ -1,22 +1,29 @@
 from player import *
+from enemy import *
 
 from mainMenu import start_menu
 from constants import *
+
 
 if __name__ == "__main__":
     pygame.init()
 
     all_sprites = pygame.sprite.Group()
+    mobs = pygame.sprite.Group()
     player = Player(all_sprites, 100, SIZE[1] - 500)
     all_sprites.add(player)
+    for i in range(4):
+        mob = Mob()
+        all_sprites.add(mob)
+        mobs.add(mob)
 
     screen = pygame.display.set_mode(SIZE)
     pygame.display.set_caption(TITLE)
     clock = pygame.time.Clock()
-
     running = True
 
     while running:
+
         if UI_CONDITION == 0:
             UI_CONDITION = start_menu(screen)
 
@@ -27,25 +34,25 @@ if __name__ == "__main__":
                 UI_CONDITION = 0
                 continue
             elif event.type == pygame.KEYDOWN and player.condition not in ["attack", "jump", "fall"]:
-                if event.key == pygame.K_d:
+                if event.key == pygame.K_d:     # при нажатии D игрок бежит вправо
                     player.set_condition("run")
                     if player.flipped:
                         player.flip()
                     player.speed = -player.speed if player.speed < 0 else player.speed
-                elif event.key == pygame.K_a:
+                elif event.key == pygame.K_a:   # при нажатии A игрок бежит влево
                     player.set_condition("run")
                     if not player.flipped:
                         player.flip()
                     player.speed = -player.speed if player.speed > 0 else player.speed
-                elif event.key == pygame.K_w:
+                elif event.key == pygame.K_w:   # при нажатии W игрок прыгает
                     player.jump()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 \
-                    and player.condition not in ["attack", "jump", "fall"]:  # Клик левой кнопкой мыши
+                    and player.condition not in ["attack", "jump", "fall"]:  # при клик левой кнопкой мыши игрок атакует
                 player.attack()
             elif event.type == pygame.KEYUP and player.condition not in ["attack", "jump", "fall"]:
                 player.set_condition("idle")
 
-        if player.condition == "run":
+        if player.condition == "run":   # изменение скорости игрока в зависимости от положения
             player.rect.x += player.speed
         elif player.condition == "jump":
             player.rect.x += player.speed // 2
@@ -56,7 +63,16 @@ if __name__ == "__main__":
             if player.rect.y == SIZE[1] - 500:
                 player.set_condition("idle")
 
+        hits = pygame.sprite.spritecollide(player, mobs, False)     # проверка на столкновение с мобом
+        '''for hit in hits:    # при столкновении
+            player.shield -= 5
+            if player.shield <= 0:
+                running = False'''
+
+
+        draw_shield_bar(screen, 50, 50, player.shield)      # полоса здоровья
         screen.fill(pygame.Color("white"))
+
         all_sprites.draw(screen)
         all_sprites.update()
         clock.tick(FPS)

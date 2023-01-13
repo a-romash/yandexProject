@@ -6,7 +6,7 @@ from pygame.locals import *
 from constants import *
 
 
-def load_image(name):
+def load_image(name):   # функция загрузки изображения
     fullname = os.path.join(name)
     image = pygame.image.load(fullname)
     return image
@@ -27,7 +27,7 @@ def change_number(all_sprites):
         all_sprites.update(b)
 
 
-class Menu_image(pygame.sprite.Sprite):
+class Menu_image(pygame.sprite.Sprite):     # отрисовка главного фона
     def __init__(self, group, image_path):
         super().__init__(group)
         self.image = load_image(image_path)
@@ -37,7 +37,7 @@ class Menu_image(pygame.sprite.Sprite):
         self.buttons_color = 0
 
 
-def draw_text(text, font, color, surface, x, y, size):
+def draw_text(text, font, color, surface, x, y, size):  # функция для отрисовки текста
     font_name = pygame.font.match_font(font)
     font = pygame.font.Font(font_name, size)
     text_obj = font.render(text, True, color)
@@ -46,10 +46,13 @@ def draw_text(text, font, color, surface, x, y, size):
     surface.blit(text_obj, text_rect)
 
 
-def start_menu(screen):
+def start_menu(screen):     # основное окно меню
     click = False
     font = pygame.font.SysFont(None, 30)
     main_clock = pygame.time.Clock()
+
+    pygame.mixer.music.load("assets/music/magic cliffs.mp3")
+    pygame.mixer.music.play(-1)
 
     all_sprites = pygame.sprite.Group()
     menu = Menu_image(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
@@ -105,7 +108,7 @@ def start_menu(screen):
         pygame.display.update()
 
 
-def rules(screen):
+def rules(screen):      # окно с правила игры
     main_clock = pygame.time.Clock()
     running = True
     click = False
@@ -136,7 +139,7 @@ def rules(screen):
         pygame.display.update()
 
 
-def credits(screen):
+def credits(screen):    # окно с благодарностями
     main_clock = pygame.time.Clock()
     running = True
     click = False
