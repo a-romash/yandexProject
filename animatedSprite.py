@@ -17,11 +17,14 @@ def load_image(name, color_key=None):
 
 
 class AnimatedSprite(pygame.sprite.Sprite):
-    def __init__(self, sprite_group, x, y):
+    def __init__(self, screen, sprite_group, x, y):
         super().__init__(sprite_group)
         self.cur_frame = 0
+        self.screen = screen
         self.frames = dict()
         self.flipped_frames = dict()
+        self.condition = "idle"
+        self.health = 100
         self.flipped = False
         self.k = 0
 
@@ -67,4 +70,3 @@ class AnimatedSprite(pygame.sprite.Sprite):
     def flip(self):
         self.flipped = True if not self.flipped else False
         self.cur_frame = 0
-

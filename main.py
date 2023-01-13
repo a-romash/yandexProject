@@ -1,3 +1,5 @@
+import pygame
+
 from player import *
 from enemy import *
 
@@ -8,16 +10,17 @@ from constants import *
 if __name__ == "__main__":
     pygame.init()
 
+    screen = pygame.display.set_mode(SIZE)
+
     all_sprites = pygame.sprite.Group()
     mobs = pygame.sprite.Group()
-    player = Player(all_sprites, 100, SIZE[1] - 500)
+    player = Player(screen, all_sprites, 100, SIZE[1] - 500)
     all_sprites.add(player)
     for i in range(4):
         mob = Mob()
         all_sprites.add(mob)
         mobs.add(mob)
 
-    screen = pygame.display.set_mode(SIZE)
     pygame.display.set_caption(TITLE)
     clock = pygame.time.Clock()
     running = True
@@ -46,9 +49,8 @@ if __name__ == "__main__":
                     player.speed = -player.speed if player.speed > 0 else player.speed
                 elif event.key == pygame.K_w:   # при нажатии W игрок прыгает
                     player.jump()
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 \
-                    and player.condition not in ["attack", "jump", "fall"]:  # при клик левой кнопкой мыши игрок атакует
-                player.attack()
+                elif event.key == pygame.K_SPACE and player.condition not in ["attack", "jump", "fall"]:  # при нажатии пробела игрок атакует
+                    player.attack()
             elif event.type == pygame.KEYUP and player.condition not in ["attack", "jump", "fall"]:
                 player.set_condition("idle")
 
@@ -69,8 +71,6 @@ if __name__ == "__main__":
             if player.shield <= 0:
                 running = False'''
 
-
-        draw_shield_bar(screen, 50, 50, player.shield)      # полоса здоровья
         screen.fill(pygame.Color("white"))
 
         all_sprites.draw(screen)

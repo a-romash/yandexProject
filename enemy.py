@@ -2,6 +2,8 @@ import pygame
 import random
 
 from constants import *
+
+
 class Mob(pygame.sprite.Sprite):   # класс моба
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)

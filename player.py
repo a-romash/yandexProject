@@ -1,11 +1,11 @@
 import json
 
-from spriteAnimation import *
+from animatedSprite import *
 
 
 class Player(AnimatedSprite):   # класс игрока
-    def __init__(self, sprite_group, x, y):
-        super().__init__(sprite_group, x, y)
+    def __init__(self, screen, sprite_group, x, y):
+        super().__init__(screen, sprite_group, x, y)
 
         with open(os.path.join("assets", "character", "data.json")) as file:
             self.data = json.load(file)
@@ -15,9 +15,8 @@ class Player(AnimatedSprite):   # класс игрока
                                                   scale=self.data["scale"])})
             self.flipped_frames.update({i: self.cut_sheet(os.path.join("assets", "character", f"{i}.png"),
                                                           self.data[i][0], scale=self.data["scale"], symmetry=True)[::-1]})
-        self.shield = 100
+
         self.speed = self.data["speed"]
-        self.condition = "idle"
         self.image = self.frames[self.condition][self.cur_frame]
         self.rect = self.rect.move(x, y)
         self.rect = self.image.get_rect()
@@ -36,13 +35,20 @@ class Player(AnimatedSprite):   # класс игрока
     def jump(self):
         self.set_condition("jump")
 
-def draw_shield_bar(surf, x, y, pct):   # отрисовка полосы здоровья
-    if pct < 0:
-        pct = 0
-    BAR_LENGTH = 100
-    BAR_HEIGHT = 10
-    fill = (pct / 100) * BAR_LENGTH
-    outline_rect = pygame.Rect(x, y, BAR_LENGTH, BAR_HEIGHT)
-    fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
-    pygame.draw.rect(surf, (0, 255, 0), fill_rect)
-    pygame.draw.rect(surf, (255, 255, 255), outline_rect, 2)
+    def update(self):
+        self.draw_shield_bar()
+        super().update()
+
+    def draw_shield_bar(self):
+        if self.health < 0:
+            self.health = 50
+        bar_width = 100
+        bar_height = 10
+        x, y = self.rect.x + self.image.get_width() // 2, self.rect.y + self.image.get_height() // 2
+
+        outline_rect = pygame.Rect(x - bar_width // 2, y - bar_height, bar_width, bar_height)
+        fill_rect = pygame.Rect(x - bar_width // 2 + 2, y - bar_height + 2,
+                                (self.health / 100) * bar_width - 4, bar_height - 4)
+        pygame.draw.rect(self.screen, (0, 0, 0), outline_rect, border_radius=3)
+        pygame.draw.rect(self.screen, (255, 0, 0), fill_rect, border_radius=3)
+
