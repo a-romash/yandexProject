@@ -53,6 +53,7 @@ def start_menu(screen):     # основное окно меню
 
     pygame.mixer.music.load("assets/music/magic cliffs.mp3")
     pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.4)
 
     all_sprites = pygame.sprite.Group()
     menu = Menu_image(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
