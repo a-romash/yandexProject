@@ -1,48 +1,61 @@
-from player import *
+import pygame
 
-from startMenu import start_menu
+from player import *
+from enemy import *
+from camera import *
+
+from mainMenu import start_menu
 from constants import *
+
 
 if __name__ == "__main__":
     pygame.init()
 
+    screen = pygame.display.set_mode(SIZE)
+
     all_sprites = pygame.sprite.Group()
-    player = Player(all_sprites, 100, SIZE[1] - 500)
+    mobs = pygame.sprite.Group()
+    player = Player(screen, all_sprites, 100, SIZE[1] - 500)
     all_sprites.add(player)
 
-    screen = pygame.display.set_mode(SIZE)
+    pygame.display.set_caption(TITLE)
     clock = pygame.time.Clock()
-
     running = True
+    camera = Camera()
 
-    if UI_CONDITION == 0:
-        start_menu(screen)
+    pygame.mixer.music.load("assets/music/magic cliffs.mp3")
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.1)
 
     while running:
+        if UI_CONDITION == 0:
+            UI_CONDITION = start_menu(screen)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.KEYDOWN and player.condition not in ["attack", "jump", "fall"]:
-                if event.key == pygame.K_d:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                UI_CONDITION = 0
+                continue
+            elif event.type == pygame.KEYDOWN and player.condition not in ["attack", "jump", "fall"]:
+                if event.key == pygame.K_d:     # при нажатии D игрок бежит вправо
                     player.set_condition("run")
                     if player.flipped:
                         player.flip()
                     player.speed = -player.speed if player.speed < 0 else player.speed
-                elif event.key == pygame.K_a:
+                elif event.key == pygame.K_a:   # при нажатии A игрок бежит влево
                     player.set_condition("run")
                     if not player.flipped:
                         player.flip()
                     player.speed = -player.speed if player.speed > 0 else player.speed
-                if event.key == pygame.K_w:
+                elif event.key == pygame.K_w:   # при нажатии W игрок прыгает
                     player.jump()
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 \
-                    and player.condition not in ["attack", "jump", "fall"]:  # Клик левой кнопкой мыши
-                player.attack()
-
-            if event.type == pygame.KEYUP and player.condition not in ["attack", "jump", "fall"]:
+                elif event.key == pygame.K_SPACE and player.condition not in ["attack", "jump", "fall"]:  # при нажатии пробела игрок атакует
+                    player.attack()
+            elif event.type == pygame.KEYUP and player.condition not in ["attack", "jump", "fall"]:
                 player.set_condition("idle")
 
-        if player.condition == "run":
+        if player.condition == "run":   # изменение скорости игрока в зависимости от положения
             player.rect.x += player.speed
         elif player.condition == "jump":
             player.rect.x += player.speed // 2
