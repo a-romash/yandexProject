@@ -52,7 +52,7 @@ def start_menu(screen):     # основное окно меню
     main_clock = pygame.time.Clock()
 
     all_sprites = pygame.sprite.Group()
-    background_image = BackgroundImage(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
+    background_image = BackgroundImage(all_sprites, os.path.join("assets", "background", f"background_{1}.jpg"))
 
     while True:
         screen.fill((0, 0, 0))
