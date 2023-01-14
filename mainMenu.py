@@ -51,10 +51,6 @@ def start_menu(screen):     # основное окно меню
     font = pygame.font.SysFont(None, 30)
     main_clock = pygame.time.Clock()
 
-    pygame.mixer.music.load("assets/music/magic cliffs.mp3")
-    pygame.mixer.music.play(-1)
-    pygame.mixer.music.set_volume(0.1)
-
     all_sprites = pygame.sprite.Group()
     background_image = BackgroundImage(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
 

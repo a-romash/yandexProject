@@ -23,6 +23,10 @@ if __name__ == "__main__":
     running = True
     camera = Camera()
 
+    pygame.mixer.music.load("assets/music/magic cliffs.mp3")
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.1)
+
     while running:
         if UI_CONDITION == 0:
             UI_CONDITION = start_menu(screen)
