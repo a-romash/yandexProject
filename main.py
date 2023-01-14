@@ -70,5 +70,10 @@ if __name__ == "__main__":
         all_sprites.draw(screen)
         all_sprites.update()
         clock.tick(FPS)
+
+        camera.update(player)
+        for sprite in all_sprites:
+            camera.apply(sprite)
+
         pygame.display.flip()
     pygame.quit()
