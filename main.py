@@ -17,10 +17,6 @@ if __name__ == "__main__":
     mobs = pygame.sprite.Group()
     player = Player(screen, all_sprites, 100, SIZE[1] - 500)
     all_sprites.add(player)
-    for i in range(4):
-        mob = Mob()
-        all_sprites.add(mob)
-        mobs.add(mob)
 
     pygame.display.set_caption(TITLE)
     clock = pygame.time.Clock()
@@ -28,7 +24,6 @@ if __name__ == "__main__":
     camera = Camera()
 
     while running:
-
         if UI_CONDITION == 0:
             UI_CONDITION = start_menu(screen)
 
@@ -66,12 +61,6 @@ if __name__ == "__main__":
             player.rect.y += 5
             if player.rect.y == SIZE[1] - 500:
                 player.set_condition("idle")
-
-        hits = pygame.sprite.spritecollide(player, mobs, False)     # проверка на столкновение с мобом
-        '''for hit in hits:    # при столкновении
-            player.shield -= 5
-            if player.shield <= 0:
-                running = False'''
 
         screen.fill(pygame.Color("white"))
         all_sprites.draw(screen)

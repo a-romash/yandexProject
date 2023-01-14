@@ -27,7 +27,7 @@ def change_number(all_sprites):
         all_sprites.update(b)
 
 
-class Menu_image(pygame.sprite.Sprite):     # отрисовка главного фона
+class BackgroundImage(pygame.sprite.Sprite):     # отрисовка главного фона
     def __init__(self, group, image_path):
         super().__init__(group)
         self.image = load_image(image_path)
@@ -53,10 +53,10 @@ def start_menu(screen):     # основное окно меню
 
     pygame.mixer.music.load("assets/music/magic cliffs.mp3")
     pygame.mixer.music.play(-1)
-    pygame.mixer.music.set_volume(0.4)
+    pygame.mixer.music.set_volume(0.1)
 
     all_sprites = pygame.sprite.Group()
-    menu = Menu_image(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
+    background_image = BackgroundImage(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
 
     while True:
         screen.fill((0, 0, 0))
@@ -84,7 +84,6 @@ def start_menu(screen):     # основное окно меню
 
         if click:
             if btn_start.collidepoint((mx, my)):
-                print('123')
                 UI_CONDITION = 1
                 return UI_CONDITION
             if btn_rules.collidepoint((mx, my)):
@@ -113,10 +112,17 @@ def rules(screen):      # окно с правила игры
     main_clock = pygame.time.Clock()
     running = True
     click = False
+    all_sprites = pygame.sprite.Group()
+
+    background_image = BackgroundImage(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
+
 
     while running:
         mx, my = pygame.mouse.get_pos()
+
         screen.fill((0, 0, 0))
+        all_sprites.draw(screen)
+
         btn_esc = pygame.Rect(50, 580, 170, 50)
         pygame.draw.rect(screen, (174, 24, 255), btn_esc, 5, 10)
         draw_text('НАЗАД', 'arrial', (255, 255, 255), screen, 95, 595, 30)
@@ -144,10 +150,16 @@ def credits(screen):    # окно с благодарностями
     main_clock = pygame.time.Clock()
     running = True
     click = False
+    all_sprites = pygame.sprite.Group()
+
+    background_image = BackgroundImage(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
 
     while running:
         mx, my = pygame.mouse.get_pos()
+
         screen.fill((0, 0, 0))
+        all_sprites.draw(screen)
+
         btn_esc = pygame.Rect(50, 580, 170, 50)
         pygame.draw.rect(screen, (174, 24, 255), btn_esc, 5, 10)
         draw_text('НАЗАД', 'arrial', (255, 255, 255), screen, 95, 595, 30)

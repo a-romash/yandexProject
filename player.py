@@ -19,7 +19,6 @@ class Player(AnimatedSprite):   # класс игрока
         self.speed = self.data["speed"]
         self.image = self.frames[self.condition][self.cur_frame]
         self.rect = self.rect.move(x, y)
-        self.rect = self.image.get_rect()
 
     def set_condition(self, new_condition):
         if new_condition not in self.data.keys():
