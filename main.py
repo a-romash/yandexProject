@@ -18,6 +18,11 @@ if __name__ == "__main__":
     player = Player(screen, all_sprites, 100, SIZE[1] - 500)
     all_sprites.add(player)
 
+    for i in range(4):
+        mob = Mob()
+        all_sprites.add(mob)
+        mobs.add(mob)
+
     pygame.display.set_caption(TITLE)
     clock = pygame.time.Clock()
     running = True
@@ -65,6 +70,12 @@ if __name__ == "__main__":
             player.rect.y += 5
             if player.rect.y == SIZE[1] - 500:
                 player.set_condition("idle")
+
+        # изменяем ракурс камеры
+        camera.update(player)
+        # обновляем положение всех спрайтов
+        for sprite in all_sprites:
+            camera.apply(sprite)
 
         screen.fill(pygame.Color("white"))
         all_sprites.draw(screen)
