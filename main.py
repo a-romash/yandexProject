@@ -2,6 +2,7 @@ import pygame
 
 from player import *
 from enemy import *
+from camera import *
 
 from mainMenu import start_menu
 from constants import *
@@ -24,6 +25,7 @@ if __name__ == "__main__":
     pygame.display.set_caption(TITLE)
     clock = pygame.time.Clock()
     running = True
+    camera = Camera()
 
     while running:
 
@@ -72,7 +74,6 @@ if __name__ == "__main__":
                 running = False'''
 
         screen.fill(pygame.Color("white"))
-
         all_sprites.draw(screen)
         all_sprites.update()
         clock.tick(FPS)
