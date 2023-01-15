@@ -19,17 +19,13 @@ class Player(AnimatedSprite):   # класс игрока
         self.speed = self.data["speed"]
         self.image = self.frames[self.condition][self.cur_frame]
         self.rect = self.rect.move(x, y)
-
-    def set_condition(self, new_condition):
-        if new_condition not in self.data.keys():
-            return
-        self.condition = new_condition
-        self.k = 0
-        self.cur_frame = 0
+        self.mask = self.get_mask(4)
+        self.damage = 45
+        # self.health = 10000  # для дебага
 
     def attack(self):
         self.set_condition("attack")
-        self.rect.x += -10 if self.flipped else 10
+        self.rect.x += -20 if self.flipped else 20
 
     def jump(self):
         self.set_condition("jump")

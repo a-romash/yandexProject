@@ -26,7 +26,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
         self.condition = "idle"
         self.health = 100
         self.flipped = False
-        self.k = 0
+        self.k = 0  # счётчик итераций для отображение анимации
 
     def cut_sheet(self, sheet_path, columns, scale=1, symmetry=False):
         sheet = load_image(sheet_path)
@@ -52,9 +52,12 @@ class AnimatedSprite(pygame.sprite.Sprite):
             if self.k // self.data[self.condition][1] == len(self.frames[self.condition]) - 1\
                     and self.condition == "attack":
                 self.set_condition("idle")
-            elif self.k // self.data[self.condition][1] == len(self.frames[self.condition]) \
+            elif self.k // self.data[self.condition][1] == len(self.frames[self.condition]) - 1 \
                     and self.condition == "jump":
                 self.set_condition("fall")
+            elif self.k // self.data[self.condition][1] == len(self.frames[self.condition]) - 1 \
+                    and self.condition == "death":
+                self.kill()
         else:
             if self.k % self.data[self.condition][1] == 0:
                 self.cur_frame = (self.cur_frame + 1) % len(self.flipped_frames[self.condition])
@@ -62,11 +65,30 @@ class AnimatedSprite(pygame.sprite.Sprite):
             if self.k // self.data[self.condition][1] == len(self.frames[self.condition]) - 1 \
                     and self.condition == "attack":
                 self.set_condition("idle")
-            elif self.k // self.data[self.condition][1] == len(self.frames[self.condition]) \
+            elif self.k // self.data[self.condition][1] == len(self.frames[self.condition]) - 1 \
                     and self.condition == "jump":
                 self.set_condition("fall")
+            elif self.k // self.data[self.condition][1] == len(self.frames[self.condition]) - 1 \
+                    and self.condition == "death":
+                self.kill()
         self.k += 1
+
+    def get_mask(self, frame):
+        return pygame.mask.from_surface(self.frames["attack"][frame]) if not self.flipped else \
+            pygame.mask.from_surface(self.flipped_frames["attack"][frame])
+
+    def set_condition(self, new_condition):
+        if new_condition not in self.data.keys():
+            return
+        self.condition = new_condition
+        self.k = 0
+        self.cur_frame = 0
 
     def flip(self):
         self.flipped = True if not self.flipped else False
         self.cur_frame = 0
+
+    def die(self):
+        if "death" not in self.data.keys():
+            raise SystemExit
+        self.set_condition("death")
