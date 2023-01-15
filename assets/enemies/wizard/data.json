@@ -1,0 +1,11 @@
+{
+	"comment": "[<count-of-frames>, <on-which-iteration-change-frame>]",
+	"attack": [8, 4],
+	"death":  [5, 5],
+	"hurt": [4, 7],
+	"idle": [8, 4],
+	"run": [8, 4],
+	"scale": 2,
+	"speed": 5,
+	"attack_range": 10
+}

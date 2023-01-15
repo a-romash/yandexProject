@@ -5,6 +5,7 @@ from enemy import *
 from camera import *
 from mainMenu import *
 from constants import *
+from wizard import Wizard
 from level import *
 
 if __name__ == "__main__":
@@ -18,7 +19,14 @@ if __name__ == "__main__":
     camera = Camera()
 
     all_sprites = pygame.sprite.Group()
+    enemies = pygame.sprite.Group()
     tiles_group = pygame.sprite.Group()
+    
+    player = Player(screen, all_sprites, 100, SIZE[1] - 320)
+
+    for i in range(8):
+        wizard = Wizard(screen, all_sprites, randint(150, SIZE[0]), SIZE[1] - 320)
+        enemies.add(wizard)
 
     fon = load_fon(all_sprites)
 
@@ -62,6 +70,12 @@ if __name__ == "__main__":
                 elif event.key == pygame.K_SPACE and player.condition not in ["attack", "jump",
                                                                               "fall"]:  # при нажатии пробела игрок атакует
                     player.attack()
+                    for enemy in enemies:
+                        if pygame.sprite.collide_mask(player, enemy):
+                            enemy.health -= player.damage
+                            if enemy.health <= 0:
+                                enemies.remove(enemy)
+                                enemy.die()
             elif event.type == pygame.KEYUP and player.condition not in ["attack", "jump", "fall"]:
                 player.set_condition("idle")
 
@@ -84,12 +98,26 @@ if __name__ == "__main__":
 
         # изменяем ракурс камеры
         camera.update(player)
+
         # обновляем положение всех спрайтов
         for sprite in all_sprites:
             camera.apply(sprite)
 
         screen.fill(pygame.Color("white"))
-        all_sprites.draw(screen)    # отрисовка всех спрайтов на экране
+
+        for enemy in enemies:
+            enemy.get_coords(player)
+            enemy.attack()
+            if pygame.sprite.collide_mask(player, enemy) and enemy.condition == "attack":
+                player.health -= enemy.damage
+                if player.health <= 0:
+                    all_sprites.remove(player)
+                    player.die()
+            elif enemy.condition != "attack":
+                enemy.set_condition('run')
+                enemy.move()
+
+        all_sprites.draw(screen)
         all_sprites.update()
         clock.tick(FPS)
 
