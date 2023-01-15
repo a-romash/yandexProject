@@ -19,6 +19,8 @@ if __name__ == "__main__":
 
     fon = load_fon()
 
+    play_tick = 0
+
     pygame.mixer.music.load("assets/music/magic cliffs.mp3")  # загрузка музыки
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.1)
@@ -29,8 +31,11 @@ if __name__ == "__main__":
     all_sprites.add(player)
 
     while running:
+        start_ticks = pygame.time.get_ticks()
+
         if UI_CONDITION == 0:
             start_menu(screen)
+            play_tick = pygame.time.get_ticks()
             UI_CONDITION = 1
 
         for event in pygame.event.get():
@@ -81,6 +86,9 @@ if __name__ == "__main__":
         for sprite in all_sprites:
             camera.apply(sprite)
         camera.update(fon)
+
+        if UI_CONDITION == 1:
+            draw(screen, start_ticks - play_tick)
 
         pygame.display.flip()
     pygame.quit()

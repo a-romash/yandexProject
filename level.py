@@ -32,7 +32,6 @@ class Fon(pygame.sprite.Sprite):
 
 def load_fon():
     time_now = dt.datetime.now().time()
-    print(time_now)
     if dt.time(hour=4, minute=0) <= time_now <= dt.time(hour=11, minute=59):
         a = 1
     elif dt.time(hour=12, minute=0) <= time_now <= dt.time(hour=16, minute=59):
@@ -79,3 +78,11 @@ def generate_level(level):
                 Tile('sky', x, y, tiles_group)
     # вернем размер поля в клетках
     return x, y
+
+
+def draw(screen, ticks):
+    seconds = int(ticks / 1000 % 60)
+    minutes = int(ticks / 60000 % 24)
+    font = pygame.font.Font(None, 70)
+    text = font.render(f"{minutes}:{seconds}", True, (255, 0, 0))
+    screen.blit(text, (80, 60))
