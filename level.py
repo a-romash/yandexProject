@@ -14,8 +14,8 @@ def load_level(filename):
     # и подсчитываем максимальную длину
     max_width = max(map(len, level_map))
 
-    # дополняем каждую строку пустыми клетками ('.')
-    return list(map(lambda x: x.ljust(max_width, '.'), level_map))
+    # дополняем каждую строку прозрачными клетками
+    return list(map(lambda x: x.ljust(max_width, ' '), level_map))
 
 
 class Fon(pygame.sprite.Sprite):
@@ -38,7 +38,6 @@ def load_fon():
     elif dt.time(hour=12, minute=0) <= time_now <= dt.time(hour=16, minute=59):
         a = 2
     elif dt.time(hour=17, minute=0) <= time_now <= dt.time(hour=22, minute=59):
-        print(9999)
         a = 3
     elif dt.time(hour=23, minute=0) <= time_now <= dt.time(hour=3, minute=59):
         a = 4
