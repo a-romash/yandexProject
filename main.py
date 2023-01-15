@@ -25,7 +25,7 @@ if __name__ == "__main__":
     level_map = load_level("assets/levels/level1.txt")
     WIDTH, HEIGHT = generate_level(level_map)
 
-    player = Player(screen, all_sprites, 100, SIZE[1] - 500)
+    player = Player(screen, all_sprites, 100, SIZE[1] - 320)
     all_sprites.add(player)
 
     while running:
@@ -69,7 +69,7 @@ if __name__ == "__main__":
             player.rect.x += player.speed // 2
             fon.rect.x += player.speed // 2
             player.rect.y += 5
-            if player.rect.y == SIZE[1] - 500:
+            if player.rect.y == SIZE[1] - 320:
                 player.set_condition("idle")
 
         screen.fill(pygame.Color("white"))
