@@ -1,5 +1,6 @@
+from constants import *
+from constants import tiles_group, all_sprites, mobs
 import pygame
-from mainMenu import load_image
 
 
 def load_level(filename):
@@ -16,8 +17,7 @@ def load_level(filename):
 
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, tile_type, pos_x, pos_y, tiles_group, all_sprites,
-                 TILE_IMAGES, TILE_WIDTH, TILE_HEIGHT):
+    def __init__(self, tile_type, pos_x, pos_y, tiles_group):
         super().__init__(tiles_group, all_sprites)
         self.image = TILE_IMAGES[tile_type]
         self.rect = self.image.get_rect().move(
@@ -29,22 +29,22 @@ def generate_level(level):
     for y in range(len(level)):
         for x in range(len(level[y])):
             if level[y][x] == '.':
-                Tile('ground1', x, y)
+                Tile('ground1', x, y, tiles_group)
             elif level[y][x] == '#':
-                Tile('ground2', x, y)
+                Tile('ground2', x, y, tiles_group)
             elif level[y][x] == '*':
-                Tile('stone1', x, y)
+                Tile('stone1', x, y, tiles_group)
             elif level[y][x] == '-':
-                Tile('stone2', x, y)
+                Tile('stone2', x, y, tiles_group)
             elif level[y][x] == '^':
-                Tile('stone3', x, y)
+                Tile('stone3', x, y, tiles_group)
             elif level[y][x] == '&':
-                Tile('tree', x, y)
+                Tile('tree', x, y, tiles_group)
             elif level[y][x] == '_':
-                Tile('island', x, y)
+                Tile('island', x, y, tiles_group)
             elif level[y][x] == '~':
-                Tile('sea', x, y)
+                Tile('sea', x, y, tiles_group)
             elif level[y][x] == '/':
-                Tile('sky', x, y)
+                Tile('sky', x, y, tiles_group)
     # вернем размер поля в клетках
     return x, y

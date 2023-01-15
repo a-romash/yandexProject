@@ -6,7 +6,6 @@ import random
 from pygame.locals import *
 from constants import *
 
-
 IMAGE = random.randint(1, 2)
 
 

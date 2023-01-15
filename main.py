@@ -10,14 +10,8 @@ from level import *
 if __name__ == "__main__":
     pygame.init()
 
-    FPS = 60
-    UI_CONDITION = 0
-
     screen = pygame.display.set_mode(SIZE)
 
-    all_sprites = pygame.sprite.Group()
-    tiles_group = pygame.sprite.Group()
-    mobs = pygame.sprite.Group()
     player = Player(screen, all_sprites, 100, SIZE[1] - 500)
     all_sprites.add(player)
 
@@ -29,8 +23,8 @@ if __name__ == "__main__":
     pygame.mixer.music.load("assets/music/magic cliffs.mp3")
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.1)
-    # level_map = load_level("assets/levels/level1.txt")
-    # WIDTH, HEIGHT = generate_level(level_map)
+    level_map = load_level("assets/levels/level1.txt")
+    WIDTH, HEIGHT = generate_level(level_map)
 
     while running:
         if UI_CONDITION == 0:
