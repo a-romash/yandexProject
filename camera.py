@@ -1,4 +1,4 @@
-from constants import WIDTH, HEIGHT
+from constants import WIDTH
 
 
 class Camera:
@@ -9,6 +9,7 @@ class Camera:
 
     # сдвинуть объект obj на смещение камеры
     def apply(self, obj):
+
         obj.rect.x += self.dx
         obj.rect.y += self.dy
 

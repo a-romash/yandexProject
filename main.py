@@ -3,38 +3,42 @@ import pygame
 from player import *
 from enemy import *
 from camera import *
-
-from mainMenu import start_menu
+from mainMenu import *
 from constants import *
-
+from level import *
 
 if __name__ == "__main__":
     pygame.init()
 
     screen = pygame.display.set_mode(SIZE)
 
-    all_sprites = pygame.sprite.Group()
-    mobs = pygame.sprite.Group()
-    player = Player(screen, all_sprites, 100, SIZE[1] - 500)
-    all_sprites.add(player)
-
-    for i in range(4):
-        mob = Mob()
-        all_sprites.add(mob)
-        mobs.add(mob)
-
     pygame.display.set_caption(TITLE)
     clock = pygame.time.Clock()
     running = True
     camera = Camera()
 
-    pygame.mixer.music.load("assets/music/magic cliffs.mp3")
+    all_sprites = pygame.sprite.Group()
+    tiles_group = pygame.sprite.Group()
+
+    fon = load_fon(all_sprites)
+
+    play_tick = 0
+
+    pygame.mixer.music.load("assets/music/magic cliffs.mp3")  # загрузка музыки
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.1)
+    level_map = load_level("assets/levels/level1.txt")  # загрузка уровня
+
+    player = Player(screen, all_sprites, 100, SIZE[1] - 320)
+    all_sprites.add(player)
 
     while running:
+        start_ticks = pygame.time.get_ticks()
+
         if UI_CONDITION == 0:
             UI_CONDITION = start_menu(screen)
+            play_tick = pygame.time.get_ticks()
+            UI_CONDITION = 1
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -43,32 +47,39 @@ if __name__ == "__main__":
                 UI_CONDITION = 0
                 continue
             elif event.type == pygame.KEYDOWN and player.condition not in ["attack", "jump", "fall"]:
-                if event.key == pygame.K_d:     # при нажатии D игрок бежит вправо
+                if event.key == pygame.K_d:  # при нажатии D игрок бежит вправо
                     player.set_condition("run")
                     if player.flipped:
                         player.flip()
                     player.speed = -player.speed if player.speed < 0 else player.speed
-                elif event.key == pygame.K_a:   # при нажатии A игрок бежит влево
+                elif event.key == pygame.K_a:  # при нажатии A игрок бежит влево
                     player.set_condition("run")
                     if not player.flipped:
                         player.flip()
                     player.speed = -player.speed if player.speed > 0 else player.speed
-                elif event.key == pygame.K_w:   # при нажатии W игрок прыгает
+                elif event.key == pygame.K_w:  # при нажатии W игрок прыгает
                     player.jump()
-                elif event.key == pygame.K_SPACE and player.condition not in ["attack", "jump", "fall"]:  # при нажатии пробела игрок атакует
+                elif event.key == pygame.K_SPACE and player.condition not in ["attack", "jump",
+                                                                              "fall"]:  # при нажатии пробела игрок атакует
                     player.attack()
             elif event.type == pygame.KEYUP and player.condition not in ["attack", "jump", "fall"]:
                 player.set_condition("idle")
 
-        if player.condition == "run":   # изменение скорости игрока в зависимости от положения
+        if player.condition == "run":  # изменение положения игрока в зависимости от действия
             player.rect.x += player.speed
+            fon.rect.x += player.speed
+        elif player.condition == "attack":
+            fon.rect.x += -10 if player.flipped else 10
+            player.rect.x += -10 if player.flipped else 10
         elif player.condition == "jump":
             player.rect.x += player.speed // 2
+            fon.rect.x += player.speed // 2
             player.rect.y -= 5
         elif player.condition == "fall":
             player.rect.x += player.speed // 2
+            fon.rect.x += player.speed // 2
             player.rect.y += 5
-            if player.rect.y == SIZE[1] - 500:
+            if player.rect.y == SIZE[1] - 320:
                 player.set_condition("idle")
 
         # изменяем ракурс камеры
@@ -78,8 +89,17 @@ if __name__ == "__main__":
             camera.apply(sprite)
 
         screen.fill(pygame.Color("white"))
-        all_sprites.draw(screen)
+        all_sprites.draw(screen)    # отрисовка всех спрайтов на экране
         all_sprites.update()
         clock.tick(FPS)
+
+        camera.update(player)   # обновление камеры
+        for sprite in all_sprites:
+            camera.apply(sprite)
+        camera.update(fon)
+
+        if UI_CONDITION == 1:
+            draw(screen, start_ticks - play_tick)
+
         pygame.display.flip()
     pygame.quit()
