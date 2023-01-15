@@ -22,7 +22,7 @@ if __name__ == "__main__":
     pygame.mixer.music.load("assets/music/magic cliffs.mp3")  # загрузка музыки
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.1)
-    level_map = load_level("assets/levels/level1.txt")
+    level_map = load_level("assets/levels/level1.txt")  # загрузка уровня
     WIDTH, HEIGHT = generate_level(level_map)
 
     player = Player(screen, all_sprites, 100, SIZE[1] - 320)
@@ -58,7 +58,7 @@ if __name__ == "__main__":
             elif event.type == pygame.KEYUP and player.condition not in ["attack", "jump", "fall"]:
                 player.set_condition("idle")
 
-        if player.condition == "run":  # изменение скорости игрока в зависимости от положения
+        if player.condition == "run":  # изменение положения игрока в зависимости от действия
             player.rect.x += player.speed
             fon.rect.x += player.speed
         elif player.condition == "jump":
@@ -73,11 +73,11 @@ if __name__ == "__main__":
                 player.set_condition("idle")
 
         screen.fill(pygame.Color("white"))
-        all_sprites.draw(screen)
+        all_sprites.draw(screen)    # отрисовка всех спрайтов на экране
         all_sprites.update()
         clock.tick(FPS)
 
-        camera.update(player)
+        camera.update(player)   # обновление камеры
         for sprite in all_sprites:
             camera.apply(sprite)
         camera.update(fon)

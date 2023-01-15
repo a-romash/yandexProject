@@ -19,7 +19,7 @@ def load_level(filename):
 
 
 class Fon(pygame.sprite.Sprite):
-
+    # класс для фонового изображения
     def __init__(self, all_sprites, name):
         super().__init__(all_sprites)
         image = load_image(name)
@@ -31,6 +31,7 @@ class Fon(pygame.sprite.Sprite):
 
 
 def load_fon():
+    # смена фона в зависимости от времени на компьютере
     time_now = dt.datetime.now().time()
     print(time_now)
     if dt.time(hour=4, minute=0) <= time_now <= dt.time(hour=11, minute=59):
@@ -49,6 +50,7 @@ def load_fon():
 
 
 class Tile(pygame.sprite.Sprite):
+    # класс неподвижных элементов
     def __init__(self, tile_type, pos_x, pos_y, tiles_group):
         super().__init__(tiles_group, all_sprites)
         self.image = TILE_IMAGES[tile_type]
@@ -57,6 +59,7 @@ class Tile(pygame.sprite.Sprite):
 
 
 def generate_level(level):
+    # генератор объектов для уровня
     for y in range(len(level)):
         for x in range(len(level[0])):
             if level[y][x] == '.':
@@ -75,7 +78,5 @@ def generate_level(level):
                 Tile('island', x, y, tiles_group)
             elif level[y][x] == '~':
                 Tile('sea', x, y, tiles_group)
-            elif level[y][x] == '/':
-                Tile('sky', x, y, tiles_group)
     # вернем размер поля в клетках
     return x, y
