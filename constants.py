@@ -11,7 +11,7 @@ UI_CONDITION = 0
 IMAGE = randint(1, 2)  # константа конкретно на одну сессию, значение может отличаться при разных запусках программы
 TITLE = "Платформер"
 TILE_IMAGES = {
-    'ground1': load_image('assets/map/ground1.png'),  # .
+    'ground1': load_image('assets/map/pros.png'),  # .
     'ground2': load_image('assets/map/ground2.png'),  # #
     'stone1': load_image('assets/map/stone1.png'),  # *
     'stone2': load_image('assets/map/stone2.png'),  # -
