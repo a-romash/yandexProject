@@ -47,8 +47,8 @@ class Player(AnimatedSprite):
         # шкала здоровья
         if self.health < 0:
             self.health = 50
-        bar_width = 100
-        bar_height = 10
+        bar_width = 80
+        bar_height = 7
         x, y = self.rect.x + self.image.get_width() // 2, self.rect.y + self.image.get_height() // 2
 
         outline_rect = pygame.Rect(x - bar_width // 2, y - bar_height, bar_width, bar_height)
