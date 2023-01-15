@@ -33,7 +33,6 @@ class Player(AnimatedSprite):
     def attack(self):
         # атака
         self.set_condition("attack")
-        self.rect.x += -10 if self.flipped else 10
 
     def jump(self):
         # прыжок

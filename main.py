@@ -66,6 +66,9 @@ if __name__ == "__main__":
         if player.condition == "run":  # изменение положения игрока в зависимости от действия
             player.rect.x += player.speed
             fon.rect.x += player.speed
+        elif player.condition == "attack":
+            fon.rect.x += -10 if player.flipped else 10
+            player.rect.x += -10 if player.flipped else 10
         elif player.condition == "jump":
             player.rect.x += player.speed // 2
             fon.rect.x += player.speed // 2
