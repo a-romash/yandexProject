@@ -21,13 +21,12 @@ class Tile(pygame.sprite.Sprite):
         super().__init__(tiles_group, all_sprites)
         self.image = TILE_IMAGES[tile_type]
         self.rect = self.image.get_rect().move(
-            TILE_WIDTH * pos_x, TILE_HEIGHT * pos_y)
+            TILE_WIDTH * pos_x - TILE_WIDTH * 3, TILE_HEIGHT * pos_y + 15)
 
 
 def generate_level(level):
-    x, y = None, None
     for y in range(len(level)):
-        for x in range(len(level[y])):
+        for x in range(len(level[0])):
             if level[y][x] == '.':
                 Tile('ground1', x, y, tiles_group)
             elif level[y][x] == '#':

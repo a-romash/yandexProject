@@ -21,7 +21,8 @@ TILE_IMAGES = {
     'sea': load_image('assets/map/sea.png'),  # ~
     'sky': load_image('assets/map/sky.png')  # /
 }
-TILE_WIDTH = TILE_HEIGHT = 50
+TILE_WIDTH = 120
+TILE_HEIGHT = 100
 all_sprites = pygame.sprite.Group()
 tiles_group = pygame.sprite.Group()
 mobs = pygame.sprite.Group()
