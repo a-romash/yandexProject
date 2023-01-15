@@ -3,7 +3,8 @@ import json
 from animatedSprite import *
 
 
-class Player(AnimatedSprite):   # класс игрока
+class Player(AnimatedSprite):
+    # класс игрока
     def __init__(self, screen, sprite_group, x, y):
         super().__init__(screen, sprite_group, x, y)
 
@@ -22,6 +23,7 @@ class Player(AnimatedSprite):   # класс игрока
         self.coords = (0, 0)
 
     def set_condition(self, new_condition):
+        # установка состояния игрока
         if new_condition not in self.data.keys():
             return
         self.condition = new_condition
@@ -29,17 +31,21 @@ class Player(AnimatedSprite):   # класс игрока
         self.cur_frame = 0
 
     def attack(self):
+        # атака
         self.set_condition("attack")
         self.rect.x += -10 if self.flipped else 10
 
     def jump(self):
+        # прыжок
         self.set_condition("jump")
 
     def update(self):
+        # обновление скина персонажа
         self.draw_shield_bar()
         super().update()
 
     def draw_shield_bar(self):
+        # шкала здоровья
         if self.health < 0:
             self.health = 50
         bar_width = 100

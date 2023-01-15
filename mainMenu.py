@@ -10,6 +10,7 @@ IMAGE = random.randint(1, 2)
 
 
 def load_image(name, color_key=None):
+    # загрузка и обработка изображения
     try:
         image = pygame.image.load(name)
     except pygame.error as message:
@@ -135,6 +136,7 @@ def rules(screen):
         screen.fill((0, 0, 0))
         all_sprites.draw(screen)
 
+        # отрисовка всех надписей и кнопок
         btn_esc = pygame.Rect(50, 580, 170, 50)
         pygame.draw.rect(screen, (174, 24, 255), btn_esc, 5, 10)
         draw_text('НАЗАД', 'arrial', (255, 255, 255), screen, 95, 595, 30)

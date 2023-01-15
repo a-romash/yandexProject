@@ -19,7 +19,6 @@ TILE_IMAGES = {
     'tree': load_image('assets/map/tree.png'),  # &
     'island': load_image('assets/map/flyingIsland.png'),  # _
     'sea': load_image('assets/map/sea.png'),  # ~
-    'sky': load_image('assets/map/sky.png'), # /
 }
 TILE_WIDTH = 40
 TILE_HEIGHT = 34
