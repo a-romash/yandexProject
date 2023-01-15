@@ -60,11 +60,14 @@ if __name__ == "__main__":
 
         if player.condition == "run":  # изменение скорости игрока в зависимости от положения
             player.rect.x += player.speed
+            fon.rect.x += player.speed
         elif player.condition == "jump":
             player.rect.x += player.speed // 2
+            fon.rect.x += player.speed // 2
             player.rect.y -= 5
         elif player.condition == "fall":
             player.rect.x += player.speed // 2
+            fon.rect.x += player.speed // 2
             player.rect.y += 5
             if player.rect.y == SIZE[1] - 500:
                 player.set_condition("idle")
