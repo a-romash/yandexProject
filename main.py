@@ -21,14 +21,14 @@ if __name__ == "__main__":
     all_sprites = pygame.sprite.Group()
     enemies = pygame.sprite.Group()
     tiles_group = pygame.sprite.Group()
-    
+
+    fon = load_fon(all_sprites)
+
     player = Player(screen, all_sprites, 100, SIZE[1] - 320)
 
     for i in range(8):
         wizard = Wizard(screen, all_sprites, randint(150, SIZE[0]), SIZE[1] - 320)
         enemies.add(wizard)
-
-    fon = load_fon(all_sprites)
 
     play_tick = 0
 
@@ -36,9 +36,6 @@ if __name__ == "__main__":
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.1)
     level_map = load_level("assets/levels/level1.txt")  # загрузка уровня
-
-    player = Player(screen, all_sprites, 100, SIZE[1] - 320)
-    all_sprites.add(player)
 
     while running:
         start_ticks = pygame.time.get_ticks()

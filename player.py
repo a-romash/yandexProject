@@ -21,7 +21,7 @@ class Player(AnimatedSprite):
         self.image = self.frames[self.condition][self.cur_frame]
         self.rect = self.rect.move(x, y)
         self.mask = self.get_mask(4)
-        self.damage = 45
+        self.damage = 65
         # self.health = 10000  # для дебага ботов
 
     def attack(self):

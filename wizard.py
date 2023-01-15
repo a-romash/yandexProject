@@ -21,4 +21,4 @@ class Wizard(Enemy):
         self.rect = self.rect.move(x, y)
         self.mask = self.get_mask(0)
         self.attack_range = self.data["attack_range"]
-        self.damage = 0.5
+        self.damage = 0.2
