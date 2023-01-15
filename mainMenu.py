@@ -1,14 +1,21 @@
 import pygame
 import sys
 import os
+import random
 
 from pygame.locals import *
 from constants import *
 
 
-def load_image(name):   # функция загрузки изображения
-    fullname = os.path.join(name)
-    image = pygame.image.load(fullname)
+IMAGE = random.randint(1, 2)
+
+
+def load_image(name, color_key=None):
+    try:
+        image = pygame.image.load(name)
+    except pygame.error as message:
+        print('Не удаётся загрузить:', name)
+        raise SystemExit(message)
     return image
 
 
@@ -27,7 +34,9 @@ def change_number(all_sprites):
         all_sprites.update(b)
 
 
-class BackgroundImage(pygame.sprite.Sprite):     # отрисовка главного фона
+class BackgroundImage(pygame.sprite.Sprite):
+    # отрисовка главного фона
+
     def __init__(self, group, image_path):
         super().__init__(group)
         self.image = load_image(image_path)
@@ -37,7 +46,9 @@ class BackgroundImage(pygame.sprite.Sprite):     # отрисовка главн
         self.buttons_color = 0
 
 
-def draw_text(text, font, color, surface, x, y, size):  # функция для отрисовки текста
+def draw_text(text, font, color, surface, x, y, size):
+    # функция для отрисовки текста
+
     font_name = pygame.font.match_font(font)
     font = pygame.font.Font(font_name, size)
     text_obj = font.render(text, True, color)
@@ -46,7 +57,10 @@ def draw_text(text, font, color, surface, x, y, size):  # функция для 
     surface.blit(text_obj, text_rect)
 
 
-def start_menu(screen):     # основное окно меню
+def start_menu(screen):
+    # основное окно меню
+
+    FPS = 60
     click = False
     font = pygame.font.SysFont(None, 30)
     main_clock = pygame.time.Clock()
@@ -80,8 +94,7 @@ def start_menu(screen):     # основное окно меню
 
         if click:
             if btn_start.collidepoint((mx, my)):
-                UI_CONDITION = 1
-                return UI_CONDITION
+                return 1
             if btn_rules.collidepoint((mx, my)):
                 rules(screen)
             if btn_credits.collidepoint((mx, my)):
@@ -104,14 +117,16 @@ def start_menu(screen):     # основное окно меню
         pygame.display.update()
 
 
-def rules(screen):      # окно с правила игры
+def rules(screen):
+    # окно с правила игры
+
     main_clock = pygame.time.Clock()
     running = True
     click = False
     all_sprites = pygame.sprite.Group()
+    FPS = 60
 
     background_image = BackgroundImage(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
-
 
     while running:
         mx, my = pygame.mouse.get_pos()
@@ -142,11 +157,14 @@ def rules(screen):      # окно с правила игры
         pygame.display.update()
 
 
-def credits(screen):    # окно с благодарностями
+def credits(screen):
+    # окно с благодарностями
+
     main_clock = pygame.time.Clock()
     running = True
     click = False
     all_sprites = pygame.sprite.Group()
+    FPS = 60
 
     background_image = BackgroundImage(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
 

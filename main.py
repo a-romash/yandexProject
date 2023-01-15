@@ -3,27 +3,15 @@ import pygame
 from player import *
 from enemy import *
 from camera import *
-from mainMenu import start_menu
+from mainMenu import *
 from constants import *
+from level import *
 
-
-def load_image(name, color_key=None):
-    try:
-        image = pygame.image.load(name)
-    except pygame.error as message:
-        print('Не удаётся загрузить:', name)
-        raise SystemExit(message)
-    pygame.display.set_mode((1, 1), pygame.NOFRAME)
-    image = image.convert_alpha()
-    if color_key is not None:
-        if color_key is -1:
-            color_key = image.get_at((0, 0))
-        image.set_colorkey(color_key)
-    return image
 
 
 def load_level(filename):
     # читаем уровень, убирая символы перевода строки
+
     with open(filename, 'r') as mapFile:
         level_map = [line.strip() for line in mapFile]
 
@@ -35,11 +23,13 @@ def load_level(filename):
 
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, tile_type, pos_x, pos_y):
+    def __init__(self, tile_type, pos_x, pos_y, tiles_group, all_sprites,
+                 TILE_IMAGES, TILE_WIDTH, TILE_HEIGHT):
         super().__init__(tiles_group, all_sprites)
         self.image = TILE_IMAGES[tile_type]
         self.rect = self.image.get_rect().move(
             TILE_WIDTH * pos_x, TILE_HEIGHT * pos_y)
+
 
 def generate_level(level):
     x, y = None, None
@@ -66,8 +56,13 @@ def generate_level(level):
     # вернем размер поля в клетках
     return x, y
 
+
+
 if __name__ == "__main__":
     pygame.init()
+
+    FPS = 60
+    UI_CONDITION = 0
 
     screen = pygame.display.set_mode(SIZE)
 
@@ -85,12 +80,13 @@ if __name__ == "__main__":
     pygame.mixer.music.load("assets/music/magic cliffs.mp3")
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.1)
-    #level_map = load_level("assets/levels/level1.txt")
-    #WIDTH, HEIGHT = generate_level(level_map)
+    # level_map = load_level("assets/levels/level1.txt")
+    # WIDTH, HEIGHT = generate_level(level_map)
 
     while running:
         if UI_CONDITION == 0:
-            UI_CONDITION = start_menu(screen)
+            start_menu(screen)
+            UI_CONDITION = 1
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -99,24 +95,25 @@ if __name__ == "__main__":
                 UI_CONDITION = 0
                 continue
             elif event.type == pygame.KEYDOWN and player.condition not in ["attack", "jump", "fall"]:
-                if event.key == pygame.K_d:     # при нажатии D игрок бежит вправо
+                if event.key == pygame.K_d:  # при нажатии D игрок бежит вправо
                     player.set_condition("run")
                     if player.flipped:
                         player.flip()
                     player.speed = -player.speed if player.speed < 0 else player.speed
-                elif event.key == pygame.K_a:   # при нажатии A игрок бежит влево
+                elif event.key == pygame.K_a:  # при нажатии A игрок бежит влево
                     player.set_condition("run")
                     if not player.flipped:
                         player.flip()
                     player.speed = -player.speed if player.speed > 0 else player.speed
-                elif event.key == pygame.K_w:   # при нажатии W игрок прыгает
+                elif event.key == pygame.K_w:  # при нажатии W игрок прыгает
                     player.jump()
-                elif event.key == pygame.K_SPACE and player.condition not in ["attack", "jump", "fall"]:  # при нажатии пробела игрок атакует
+                elif event.key == pygame.K_SPACE and player.condition not in ["attack", "jump",
+                                                                              "fall"]:  # при нажатии пробела игрок атакует
                     player.attack()
             elif event.type == pygame.KEYUP and player.condition not in ["attack", "jump", "fall"]:
                 player.set_condition("idle")
 
-        if player.condition == "run":   # изменение скорости игрока в зависимости от положения
+        if player.condition == "run":  # изменение скорости игрока в зависимости от положения
             player.rect.x += player.speed
         elif player.condition == "jump":
             player.rect.x += player.speed // 2
