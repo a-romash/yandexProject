@@ -94,7 +94,7 @@ if __name__ == "__main__":
             elif enemy.condition != "attack":
                 enemy.set_condition('run')
                 enemy.move()
-            print(enemy.condition)
+
         all_sprites.draw(screen)
         all_sprites.update()
         clock.tick(FPS)

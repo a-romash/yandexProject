@@ -74,7 +74,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
         self.k += 1
 
     def get_mask(self, frame):
-        return pygame.mask.from_surface(self.frames["attack"][frame]) if not self.flipped else \
+        return pygame.mask.from_surface(self.frames["attack"][frame]) if self.flipped else \
             pygame.mask.from_surface(self.flipped_frames["attack"][frame])
 
     def set_condition(self, new_condition):
