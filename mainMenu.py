@@ -88,9 +88,10 @@ def start_menu(screen):
         pygame.draw.rect(screen, (147, 112, 250), btn_rules, border_radius=10)
         pygame.draw.rect(screen, (147, 112, 250), btn_credits, border_radius=10)
 
-        draw_text('ПЛАТФОРМЕР', 'arrial', (245, 245, 245), screen, 380, 170, 100)
+        draw_text('BATTLE TRIAL', 'arrial', (245, 245, 245), screen, 380, 170, 100)
 
         draw_text('ИГРАТЬ', 'arrial', (245, 245, 245), screen, 190, 397, 30)
+
         draw_text('ПРАВИЛА', 'arrial', (245, 245, 245), screen, 180, 497, 30)
         draw_text('CREDITS', 'arrial', (245, 245, 245), screen, 180, 597, 30)
 
@@ -127,6 +128,12 @@ def rules(screen):
     click = False
     all_sprites = pygame.sprite.Group()
     FPS = 60
+    rules_text = ["Вам необходимо как можно дольше продержаться", "на арене, сражаясь с монстрами", "",
+                  "                         Управление:",
+                  "                          'A' - налево",
+                  "                          'D' - направо",
+                  "                          'W' - прыжок",
+                  "                          'пробел' - атака"]
 
     background_image = BackgroundImage(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
 
@@ -135,6 +142,11 @@ def rules(screen):
 
         screen.fill((0, 0, 0))
         all_sprites.draw(screen)
+
+        text_coord_y, text_coord_x = 140, 130
+        for line in rules_text:
+            draw_text(line, 'arrial', (255, 255, 255), screen, text_coord_x, text_coord_y + 30, 60)
+            text_coord_y += 50
 
         # отрисовка всех надписей и кнопок
         btn_esc = pygame.Rect(50, 580, 170, 50)
@@ -181,6 +193,7 @@ def credits(screen):
         pygame.draw.rect(screen, (174, 24, 255), btn_esc, 5, 10)
         draw_text('НАЗАД', 'arrial', (255, 255, 255), screen, 95, 595, 30)
         draw_text('Отдельноe спасибо:', 'arrial', (255, 255, 255), screen, 400, 50, 100)
+        draw_text('Нашей нервной системе!', 'arrial', (255, 255, 255), screen, 350, 350, 60)
         if btn_esc.collidepoint((mx, my)):
             if click:
                 running = False
