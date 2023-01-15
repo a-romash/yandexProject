@@ -82,6 +82,12 @@ if __name__ == "__main__":
             if player.rect.y == SIZE[1] - 320:
                 player.set_condition("idle")
 
+        # изменяем ракурс камеры
+        camera.update(player)
+        # обновляем положение всех спрайтов
+        for sprite in all_sprites:
+            camera.apply(sprite)
+
         screen.fill(pygame.Color("white"))
         all_sprites.draw(screen)    # отрисовка всех спрайтов на экране
         all_sprites.update()
