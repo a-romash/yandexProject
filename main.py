@@ -17,7 +17,10 @@ if __name__ == "__main__":
     running = True
     camera = Camera()
 
-    fon = load_fon()
+    all_sprites = pygame.sprite.Group()
+    tiles_group = pygame.sprite.Group()
+
+    fon = load_fon(all_sprites)
 
     play_tick = 0
 
@@ -25,7 +28,6 @@ if __name__ == "__main__":
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.1)
     level_map = load_level("assets/levels/level1.txt")  # загрузка уровня
-    WIDTH, HEIGHT = generate_level(level_map)
 
     player = Player(screen, all_sprites, 100, SIZE[1] - 320)
     all_sprites.add(player)
@@ -34,7 +36,7 @@ if __name__ == "__main__":
         start_ticks = pygame.time.get_ticks()
 
         if UI_CONDITION == 0:
-            start_menu(screen)
+            UI_CONDITION = start_menu(screen)
             play_tick = pygame.time.get_ticks()
             UI_CONDITION = 1
 

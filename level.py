@@ -1,8 +1,19 @@
 from constants import *
-from constants import tiles_group, all_sprites, mobs
-from mainMenu import BackgroundImage
 import pygame
 import datetime as dt
+
+TILE_IMAGES = {
+    'ground1': load_image('assets/map/pros.png'),  # .
+    'ground2': load_image('assets/map/ground2.png'),  # #
+    'stone1': load_image('assets/map/stone1.png'),  # *
+    'stone2': load_image('assets/map/stone2.png'),  # -
+    'stone3': load_image('assets/map/stone3.png'),  # ^
+    'tree': load_image('assets/map/tree.png'),  # &
+    'island': load_image('assets/map/flyingIsland.png'),  # _
+    'sea': load_image('assets/map/sea.png'),  # ~
+}
+TILE_WIDTH = 40
+TILE_HEIGHT = 34
 
 
 def load_level(filename):
@@ -30,7 +41,7 @@ class Fon(pygame.sprite.Sprite):
         self.rect.y = 0
 
 
-def load_fon():
+def load_fon(sprite_group):
     # смена фона в зависимости от времени на компьютере
     time_now = dt.datetime.now().time()
     if dt.time(hour=4, minute=0) <= time_now <= dt.time(hour=11, minute=59):
@@ -44,7 +55,7 @@ def load_fon():
     else:
         a = 4
 
-    fon = Fon(all_sprites, f'assets/map/fon{a}.jpg')
+    fon = Fon(sprite_group, f'assets/map/fon{a}.jpg')
     return fon
 
 
