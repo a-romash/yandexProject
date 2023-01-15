@@ -12,9 +12,6 @@ if __name__ == "__main__":
 
     screen = pygame.display.set_mode(SIZE)
 
-    player = Player(screen, all_sprites, 100, SIZE[1] - 500)
-    all_sprites.add(player)
-
     pygame.display.set_caption(TITLE)
     clock = pygame.time.Clock()
     running = True
@@ -25,6 +22,9 @@ if __name__ == "__main__":
     pygame.mixer.music.set_volume(0.1)
     level_map = load_level("assets/levels/level1.txt")
     WIDTH, HEIGHT = generate_level(level_map)
+
+    player = Player(screen, all_sprites, 100, SIZE[1] - 500)
+    all_sprites.add(player)
 
     while running:
         if UI_CONDITION == 0:
