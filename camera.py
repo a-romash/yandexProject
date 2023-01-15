@@ -1,3 +1,5 @@
+from constants import WIDTH
+
 class Camera:
     # зададим начальный сдвиг камеры
     def __init__(self):
@@ -12,4 +14,4 @@ class Camera:
 
     # позиционировать камеру на объекте target
     def update(self, target):
-        self.dx = -(target.rect.x + target.rect.w // 2 - 1280 // 2)
+        self.dx = -(target.rect.x + target.rect.w // 2 - WIDTH // 2)
