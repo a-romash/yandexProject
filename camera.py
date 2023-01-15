@@ -6,6 +6,7 @@ class Camera:
 
     # сдвинуть объект obj на смещение камеры
     def apply(self, obj):
+
         obj.rect.x += self.dx
         obj.rect.y += self.dy
 
