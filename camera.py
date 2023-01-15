@@ -1,5 +1,3 @@
-# from constants import WIDTH
-
 class Camera:
     # зададим начальный сдвиг камеры
     def __init__(self):

@@ -38,7 +38,9 @@ class BackgroundImage(pygame.sprite.Sprite):
 
     def __init__(self, group, image_path):
         super().__init__(group)
-        self.image = load_image(image_path)
+        image = load_image(image_path)
+        image = pygame.transform.scale(image, (1280, 720))
+        self.image = image
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = 0

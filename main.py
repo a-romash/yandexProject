@@ -17,7 +17,9 @@ if __name__ == "__main__":
     running = True
     camera = Camera()
 
-    pygame.mixer.music.load("assets/music/magic cliffs.mp3")    # загрузка музыки
+    fon = load_fon()
+
+    pygame.mixer.music.load("assets/music/magic cliffs.mp3")  # загрузка музыки
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.1)
     level_map = load_level("assets/levels/level1.txt")
@@ -75,6 +77,7 @@ if __name__ == "__main__":
         camera.update(player)
         for sprite in all_sprites:
             camera.apply(sprite)
+        camera.update(fon)
 
         pygame.display.flip()
     pygame.quit()
