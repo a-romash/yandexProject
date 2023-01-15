@@ -1,14 +1,21 @@
 import pygame
 import sys
 import os
+import random
 
 from pygame.locals import *
 from constants import *
 
+IMAGE = random.randint(1, 2)
 
-def load_image(name):   # функция загрузки изображения
-    fullname = os.path.join(name)
-    image = pygame.image.load(fullname)
+
+def load_image(name, color_key=None):
+    # загрузка и обработка изображения
+    try:
+        image = pygame.image.load(name)
+    except pygame.error as message:
+        print('Не удаётся загрузить:', name)
+        raise SystemExit(message)
     return image
 
 
@@ -27,17 +34,23 @@ def change_number(all_sprites):
         all_sprites.update(b)
 
 
-class BackgroundImage(pygame.sprite.Sprite):     # отрисовка главного фона
+class BackgroundImage(pygame.sprite.Sprite):
+    # отрисовка главного фона
+
     def __init__(self, group, image_path):
         super().__init__(group)
-        self.image = load_image(image_path)
+        image = load_image(image_path)
+        image = pygame.transform.scale(image, (1280, 720))
+        self.image = image
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = 0
         self.buttons_color = 0
 
 
-def draw_text(text, font, color, surface, x, y, size):  # функция для отрисовки текста
+def draw_text(text, font, color, surface, x, y, size):
+    # функция для отрисовки текста
+
     font_name = pygame.font.match_font(font)
     font = pygame.font.Font(font_name, size)
     text_obj = font.render(text, True, color)
@@ -46,7 +59,10 @@ def draw_text(text, font, color, surface, x, y, size):  # функция для 
     surface.blit(text_obj, text_rect)
 
 
-def start_menu(screen):     # основное окно меню
+def start_menu(screen):
+    # основное окно меню
+
+    FPS = 60
     click = False
     font = pygame.font.SysFont(None, 30)
     main_clock = pygame.time.Clock()
@@ -72,16 +88,16 @@ def start_menu(screen):     # основное окно меню
         pygame.draw.rect(screen, (147, 112, 250), btn_rules, border_radius=10)
         pygame.draw.rect(screen, (147, 112, 250), btn_credits, border_radius=10)
 
-        draw_text('ПЛАТФОРМЕР', 'arrial', (245, 245, 245), screen, 380, 170, 100)
+        draw_text('BATTLE TRIAL', 'arrial', (245, 245, 245), screen, 380, 170, 100)
 
         draw_text('ИГРАТЬ', 'arrial', (245, 245, 245), screen, 190, 397, 30)
+
         draw_text('ПРАВИЛА', 'arrial', (245, 245, 245), screen, 180, 497, 30)
         draw_text('CREDITS', 'arrial', (245, 245, 245), screen, 180, 597, 30)
 
         if click:
             if btn_start.collidepoint((mx, my)):
-                UI_CONDITION = 1
-                return UI_CONDITION
+                return 1
             if btn_rules.collidepoint((mx, my)):
                 rules(screen)
             if btn_credits.collidepoint((mx, my)):
@@ -104,14 +120,22 @@ def start_menu(screen):     # основное окно меню
         pygame.display.update()
 
 
-def rules(screen):      # окно с правила игры
+def rules(screen):
+    # окно с правила игры
+
     main_clock = pygame.time.Clock()
     running = True
     click = False
     all_sprites = pygame.sprite.Group()
+    FPS = 60
+    rules_text = ["Вам необходимо как можно дольше продержаться", "на арене, сражаясь с монстрами", "",
+                  "                         Управление:",
+                  "                          'A' - налево",
+                  "                          'D' - направо",
+                  "                          'W' - прыжок",
+                  "                          'пробел' - атака"]
 
     background_image = BackgroundImage(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
-
 
     while running:
         mx, my = pygame.mouse.get_pos()
@@ -119,6 +143,12 @@ def rules(screen):      # окно с правила игры
         screen.fill((0, 0, 0))
         all_sprites.draw(screen)
 
+        text_coord_y, text_coord_x = 140, 130
+        for line in rules_text:
+            draw_text(line, 'arrial', (255, 255, 255), screen, text_coord_x, text_coord_y + 30, 60)
+            text_coord_y += 50
+
+        # отрисовка всех надписей и кнопок
         btn_esc = pygame.Rect(50, 580, 170, 50)
         pygame.draw.rect(screen, (174, 24, 255), btn_esc, 5, 10)
         draw_text('НАЗАД', 'arrial', (255, 255, 255), screen, 95, 595, 30)
@@ -142,11 +172,14 @@ def rules(screen):      # окно с правила игры
         pygame.display.update()
 
 
-def credits(screen):    # окно с благодарностями
+def credits(screen):
+    # окно с благодарностями
+
     main_clock = pygame.time.Clock()
     running = True
     click = False
     all_sprites = pygame.sprite.Group()
+    FPS = 60
 
     background_image = BackgroundImage(all_sprites, os.path.join("assets", "background", f"background_{IMAGE}.jpg"))
 
@@ -160,6 +193,7 @@ def credits(screen):    # окно с благодарностями
         pygame.draw.rect(screen, (174, 24, 255), btn_esc, 5, 10)
         draw_text('НАЗАД', 'arrial', (255, 255, 255), screen, 95, 595, 30)
         draw_text('Отдельноe спасибо:', 'arrial', (255, 255, 255), screen, 400, 50, 100)
+        draw_text('Нашей нервной системе!', 'arrial', (255, 255, 255), screen, 350, 350, 60)
         if btn_esc.collidepoint((mx, my)):
             if click:
                 running = False

@@ -3,7 +3,8 @@ import json
 from animatedSprite import *
 
 
-class Player(AnimatedSprite):   # класс игрока
+class Player(AnimatedSprite):
+    # класс игрока
     def __init__(self, screen, sprite_group, x, y):
         super().__init__(screen, sprite_group, x, y)
 
@@ -21,20 +22,24 @@ class Player(AnimatedSprite):   # класс игрока
         self.rect = self.rect.move(x, y)
         self.mask = self.get_mask(4)
         self.damage = 45
-        # self.health = 10000  # для дебага
+        # self.health = 10000  # для дебага ботов
 
     def attack(self):
+        # атака
         self.set_condition("attack")
         self.rect.x += -20 if self.flipped else 20
 
     def jump(self):
+        # прыжок
         self.set_condition("jump")
 
     def update(self):
+        # обновление скина персонажа
         self.draw_shield_bar()
         super().update()
 
     def draw_shield_bar(self):
+        # шкала здоровья
         if self.health < 0:
             self.health = 50
         bar_width = 80
